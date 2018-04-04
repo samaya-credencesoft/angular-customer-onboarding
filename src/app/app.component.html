@@ -1,11 +1,183 @@
-<div class="container-fluid">
-<div class="col-md-offset-1">
-  <h1>
-    Welcome to the Funny Bank that has no money ! but will  give loans :)
-  </h1>
-</div>
+<mat-horizontal-stepper [linear]="isLinear" #stepper="matHorizontalStepper">
+  <mat-step [stepControl]="firstFormGroup">
+    <form [formGroup]="firstFormGroup">
+      <ng-template matStepLabel>Fill out your name</ng-template>
+      
+      <div>
+        <!-- 1st form -->
+        <!-- Customer Category and Mobile Number -->
+        
+        <div>
+          <mat-form-field class="input-full-width">
+            <mat-select placeholder="Customer Category">
+              <mat-option *ngFor="let customer of customers" [value]="customer.value">
+                {{ customer.viewValue }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+            <mat-form-field class="input-full-width" hintLabel="10 digit Mobile Number">
+              <input matInput #input maxlength="10" placeholder="Mobile Number">
+  
+            </mat-form-field>
+        </div>
+        
+          <!-- Email and Employement Type -->
+        
+          <div>
+            <mat-form-field class="email-full-width">
+              <input matInput placeholder="Email" [formControl]="emailFormControl"
+                     [errorStateMatcher]="matcher">              
+              <mat-error *ngIf="emailFormControl.hasError('email') && !emailFormControl.hasError('required')">
+                Please enter a valid email address
+              </mat-error>
+              <mat-error *ngIf="emailFormControl.hasError('required')">
+                Email is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+          <mat-form-field class="input-full-width">
+            <mat-select placeholder="Employement Type">
+              <mat-option *ngFor="let employee of employees" [value]="employee.value">
+                {{ employee.viewValue }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        
+        <!-- Annual Income and Loan Type -->
+        
+        <div>
+          <mat-form-field class="input-full-width">
+            <input matInput placeholder="Annual Income" class="example-right-align">
+            <span matPrefix>₹&nbsp;</span>
+            <span matSuffix>.00</span>
+          </mat-form-field>
+          <mat-form-field class="input-full-width">
+            <mat-select placeholder="Loan Type">
+              <mat-option *ngFor="let ltype of ltypes" [value]="ltype.value">
+                {{ ltype.viewValue }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        
+        <!-- Loan Amount and Loan Tenure -->
+        
+        <div>
+          <mat-form-field class="input-full-width">
+            <input matInput placeholder="Loan Amount" class="example-right-align">
+            <span matPrefix>₹&nbsp;</span>
+            <span matSuffix>.00</span>
+          </mat-form-field>
+          <mat-form-field class="input-full-width">
+            <mat-select placeholder="Loan Tenure">
+              <mat-option *ngFor="let tenure of tenures" [value]="tenure.value">
+                {{ tenure.viewValue }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        </div>
+        <!-- stepper next button -->
+      <div>
+        <button mat-button matStepperNext>Next</button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step [stepControl]="secondFormGroup">
+    <form [formGroup]="secondFormGroup">
+      <ng-template matStepLabel>Fill out your address</ng-template>
+      <div>
+        <!-- 2nd form -->
+        <!-- Title and Name -->
+        
+        <div>
+        <mat-form-field class="input-full-width">
+          <mat-select placeholder="Title">
+            <mat-option *ngFor="let title of titles" [value]="title.value">
+              {{ title.viewValue }}
+            </mat-option>
+          </mat-select>
+          </mat-form-field>
+          <mat-form-field class="input-full-width">
+            <input matInput placeholder="Name">
+          </mat-form-field>
+        </div>
+        
+        <!-- Aadhar and Pan -->
+        
+        <div>
+          <mat-form-field class="input-full-width" hintLabel="Your 12 digit aadhar">
+            <input matInput  #input maxlength="12" placeholder="Aadhar">
+          </mat-form-field>
+          <mat-form-field class="input-full-width" hintLabel="Your 10 digit pan ">
+            <input matInput #input maxlength="10"  placeholder="Pan">
 
+          </mat-form-field>
+        </div>
+        
+        <!-- Gender and Date of Birth -->
+        
+        <div>
+        <mat-form-field class="input-full-width">
+          <mat-select placeholder="Gender">
+            <mat-option *ngFor="let gender of genders" [value]="gender.value">
+              {{ gender.viewValue }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field class="date-full-width">  
+          <input matInput [matDatepicker]="picker" placeholder="Date of birth">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+        </div>
+        
+        <!-- Pin Code and Landmark -->
+        
+        <div>
+          <mat-form-field class="input-full-width" hintLabel="Your 6 digit pincode">
+            <input matInput #input maxlength="6" placeholder="Pin Code">
+            
+          </mat-form-field>
+          <mat-form-field class="input-full-width" hintLabel="Max 10 character">
+            <input matInput  #input maxlength="10" placeholder="Area/Land mark">
 
-<br/>
-<router-outlet></router-outlet>
-</div>
+          </mat-form-field>
+        </div>
+        
+        <!-- District and State -->
+        
+        <div>
+          <mat-form-field class="input-full-width">
+            <input matInput placeholder="District">
+          </mat-form-field>
+          <mat-form-field class="input-full-width">
+            <input matInput placeholder="State">
+          </mat-form-field>
+        </div>
+        
+        <!-- Full Address -->
+        
+        <div>
+        <form class="address-form">
+          <mat-form-field class="address-full-width" hintLabel="Max 100 character">
+            <input matInput #input maxlength="100" placeholder="Address">
+            <mat-hint align="end">{{input.value?.length || 0}}/100</mat-hint>
+          </mat-form-field>
+        </form>
+        </div>
+        
+        
+        </div>
+      <div>
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-button matStepperNext>Submit</button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel>Done</ng-template>
+    You had successfully registered the forms.
+    Thank you.
+  </mat-step>
+</mat-horizontal-stepper>
